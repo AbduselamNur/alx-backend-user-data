@@ -67,7 +67,7 @@ class BasicAuth(Auth):
             return None
         except Exception:
             return None
-        
+
     def current_user(self, request=None) -> TypeVar('User'):
         """
         Overloads Auth and retrieves the User instance for a request
