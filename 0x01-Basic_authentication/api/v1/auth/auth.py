@@ -3,6 +3,7 @@
 """
 from api.v1.views import app_views
 from flask import abort, jsonify, request
+from typing import List, TypeVar
 
 
 class Auth:
