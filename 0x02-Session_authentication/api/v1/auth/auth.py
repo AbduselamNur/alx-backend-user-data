@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-""" Module of Auth views
+"""Authentication module for the API.
 """
-from api.v1.views import app_views
-from flask import abort, jsonify, request
-from typing import List, TypeVar
+import os
 import re
+from typing import List, TypeVar
+from flask import request
 
 
 class Auth:
-    """ Auth class
+    """Authentication class.
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ require_auth
+        """Checks if a path requires authentication.
         """
         if path is not None and excluded_paths is not None:
             for exclusion_path in map(lambda x: x.strip(), excluded_paths):
@@ -27,13 +27,20 @@ class Auth:
         return True
 
     def authorization_header(self, request=None) -> str:
-        """ authorization_header
+        """Gets the authorization header field from the request.
         """
-        if request is None or "Authorization" not in request.headers:
-            return None
-        return request.headers["Authorization"]
+        if request is not None:
+            return request.headers.get('Authorization', None)
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ current_user
+        """Gets the current user from the request.
         """
         return None
+
+    def session_cookie(self, request=None) -> str:
+        """Gets the value of the cookie named SESSION_NAME.
+        """
+        if request is not None:
+            cookie_name = os.getenv('SESSION_NAME')
+            return request.cookies.get(cookie_name)
